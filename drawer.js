@@ -8,6 +8,8 @@ var orreryDrawer = function() {
 	var speed = 2; 
 	var SPHERE_COUNT = 2000;
 	var segment_count = 20;
+	var dx = 0, dy = 0, dz = 0;
+	// var scale = 10;
 
 	var mesh;
 	var  particles, geometry, material, i, h, color, sprite, size;	
@@ -121,6 +123,11 @@ var orreryDrawer = function() {
 				particles.sortParticles = true;
 
 				scene.add( particles );
+				
+				dx = 0; dy = 0; dz = 0;
+				mesh.position.x = 0;
+				mesh.position.y = 0;
+				mesh.position.z = 0;
 
 				render();
 
@@ -149,6 +156,7 @@ var orreryDrawer = function() {
 		camera.position.y = 0;
 		camera.position.z = 0;
 	}
+	
 
 	function moveForward() {
 
@@ -166,9 +174,8 @@ var orreryDrawer = function() {
 		camera.position.x += dx;
 		camera.position.y += dy;
 		camera.position.z += dz;
-		moveSpacebox(dz,dy,dz);
 
-		render();
+		render(true);
 	}
 
 	function moveBackward() {
@@ -187,9 +194,8 @@ var orreryDrawer = function() {
 		camera.position.x -= dx;
 		camera.position.y -= dy;
 		camera.position.z -= dz;
-		moveSpacebox(dz,dy,dz);
 
-		render();
+		render(true);
 	}
 
 	function onWindowResize() {
@@ -263,15 +269,9 @@ var orreryDrawer = function() {
 		phi = THREE.Math.degToRad( 90 - lat );
 		theta = THREE.Math.degToRad( lon );
 	}
-	
-	function moveSpacebox(dx,dy,dz) {
-		mesh.position.x += dx;
-		mesh.position.y += dy;
-		mesh.position.z += dz;
-	}
 
-
-	function render() {
+	function render(moveCube) {
+		moveCube = moveCube || false;
 
 		setAngles();
 
@@ -280,6 +280,18 @@ var orreryDrawer = function() {
 		target.z = 0.5 * cubeSize * Math.sin( phi ) * Math.sin( theta );
 
 		camera.lookAt( target );
+
+		// Static cube walls effect	
+		if (moveCube)
+		{
+			mesh.position.x += dx;
+			mesh.position.y += dy;
+			mesh.position.z += dz;
+		}
+		
+		var textOut = "Инфа" + "<br/>x: " + String(camera.position.x).substr(0,5) + "<br/>y: " 
+								+ String(camera.position.y).substr(0,5) + "<br/>z: " + String(camera.position.z).substr(0,5);
+		$("#info").html(textOut);
 
 		renderer.render( scene, camera );
 
