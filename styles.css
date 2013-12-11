@@ -1,0 +1,25 @@
+body {
+	background-color: rgb(200,200,200);
+	margin: 0px;
+	overflow: hidden;
+}
+
+.scene {
+	border: 2px double black;
+	background: #2cf; /* Цвет фона */
+    margin: 10px; /* Поля вокруг текста */
+    position: absolute;
+    left: 20%;
+    height: 100%;
+    width: 70%;
+}
+
+.test {
+	background: #f00;
+	float: left;
+	height: 200px;
+}
+
+canvas {
+  display: block;
+}
